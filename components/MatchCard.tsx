@@ -60,14 +60,31 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
   const badgeClasses = () => {
     switch (resultType) {
       case "VICTORIA":
-        return "bg-[#2d6a4f] text-white border border-[#2d6a4f]/30";
+        return "bg-green-700 text-white border border-green-600/30 font-black";
       case "DERROTA":
-        return "bg-[#8a2c2c] text-white border border-[#8a2c2c]/30";
+        return "bg-[#8a2c2c] text-white border border-[#8a2c2c]/30 font-black";
       case "EMPATE":
-        return "bg-[#414942] text-zinc-200 border border-zinc-700/50";
+        return "bg-[#414942] text-zinc-200 border border-zinc-700/50 font-black";
       case "FUTURO":
       default:
-        return "bg-zinc-900 text-zinc-500 border border-zinc-800";
+        return "bg-zinc-900 text-zinc-500 border border-zinc-800 font-bold";
+    }
+  };
+
+  // Clases condicionales facheras para el fondo y bordes
+  const cardClasses = () => {
+    let base = "flex flex-col justify-between p-6 rounded-[8px] border transition-all duration-300 hover:scale-[1.01] group ";
+    
+    switch (resultType) {
+      case "VICTORIA":
+        return base + "border-[#2d6a4f]/30 bg-gradient-to-br from-[#105238]/15 via-[#1d211e] to-[#111412] hover:border-green-500/50 hover:shadow-lg hover:shadow-green-950/10";
+      case "DERROTA":
+        return base + "border-red-950/50 bg-gradient-to-br from-red-950/10 via-[#1d211e] to-[#111412] hover:border-red-900/30";
+      case "EMPATE":
+        return base + "border-zinc-850 bg-[#1d211e] hover:border-zinc-700/60";
+      case "FUTURO":
+      default:
+        return base + "border-dashed border-zinc-800 bg-zinc-950/10 hover:border-[#2d6a4f]/30";
     }
   };
 
@@ -121,7 +138,7 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
   };
 
   return (
-    <div className="flex flex-col justify-between p-6 rounded-[8px] bg-[#1d211e] border border-[#414942]/60 hover:border-zinc-700 transition-all duration-200 shadow-lg hover:scale-[1.01] group">
+    <div className={cardClasses()}>
       <div>
         {/* Cabecera de la Tarjeta (Fecha e Indicador de resultado) */}
         <div className="flex items-center justify-between mb-4">
