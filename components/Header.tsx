@@ -102,6 +102,37 @@ export default function Header() {
           </Show>
         </div>
       </div>
+
+      {/* Botonera de Navegación Móvil Flotante (Pill-shaped app bar) */}
+      <nav className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-around w-[90%] max-w-[360px] h-14 rounded-full border border-[#2d6a4f]/25 bg-[#1d211e]/90 backdrop-blur-md px-6 shadow-2xl shadow-black/80">
+        <Link
+          href="/"
+          className={`flex flex-col items-center gap-0.5 text-[9px] font-bold tracking-wider uppercase transition-colors ${
+            isHomeActive ? "text-white" : "text-zinc-400 hover:text-zinc-200"
+          }`}
+        >
+          <span className="text-base leading-none">{"🏛️"}</span>
+          <span>{"Club"}</span>
+        </Link>
+        <Link
+          href="/partidos"
+          className={`flex flex-col items-center gap-0.5 text-[9px] font-bold tracking-wider uppercase transition-colors ${
+            isPartidosActive ? "text-white" : "text-zinc-400 hover:text-zinc-200"
+          }`}
+        >
+          <span className="text-base leading-none">{"⚽"}</span>
+          <span>{"Partidos"}</span>
+        </Link>
+        <Link
+          href="/hincha"
+          className={`flex flex-col items-center gap-0.5 text-[9px] font-bold tracking-wider uppercase transition-colors ${
+            isHinchaActive ? "text-white" : "text-zinc-400 hover:text-zinc-200"
+          }`}
+        >
+          <span className="text-base leading-none">{"👤"}</span>
+          <span>{"Perfil"}</span>
+        </Link>
+      </nav>
     </header>
   );
 }
