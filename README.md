@@ -17,7 +17,7 @@ La plataforma se conecta a un motor relacional en la nube para sincronizar diná
 
 | Panel de Socio & Historial | Ecosistema del Hincha |
 | :---: | :---: |
-| **Perfil del Hincha** <br> *Métricas de efectividad de puntos, cálculo de fidelidad, carnet digital de socio y contador de goles gritados en vivo.* | **Características de la Plataforma** <br><br> 🟢 **Autenticación Segura:** Sesiones con Clerk Auth integradas al flujo relacional.<br><br>⚫ **Base de Datos Serverless:** Persistencia robusta y ágil en Neon PostgreSQL.<br><br>⚪ **Relación de Goles:** Lógica que procesa de forma asíncrona qué goles viste convertir en la tribuna.<br><br>🟢 **Diseño UI Premium:** Modo oscuro inmersivo con Tailwind CSS diseñado a medida para el Villero. |
+| **Perfil del Hincha** <br> *Métricas de efectividad de puntos, cálculo de fidelidad, carnet digital de socio y contador de goles gritados en vivo.* | **Características de la Plataforma** <br><br> 🟢 **Autenticación Segura:** Sesiones con Clerk Auth integradas al flujo relacional.<br><br>⚪ **Base de Datos Serverless:** Persistencia robusta y ágil en Neon PostgreSQL.<br><br>⚫ **Relación de Goles:** Lógica que procesa de forma asíncrona qué goles viste convertir en la tribuna.<br><br>🟢 **Diseño UI Premium:** Modo oscuro inmersivo con Tailwind CSS diseñado a medida para el Villero. |
 | <img src="https://github.com/user-attachments/assets/b8ddb5be-436a-41fb-aa50-f884c0e7ddec" width="100%" /> | *“A Villa Mitre yo lo sigo siempre a todos lados...”* <br><br> El Fortín Digital es la bitácora oficial de los simpatizantes del Tricolor. Un registro formal, exhaustivo y estético de cada paso que damos alentando al más grande del sur argentino. |
 
 ---
