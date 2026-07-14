@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Mi Historial de Cancha — Villa Mitre",
   description: "Bitácora personal para registrar la asistencia a los partidos de Villa Mitre y analizar las estadísticas de efectividad del hincha.",
   icons: {
-    icon: "/club-villa-mitre-bahia-580x580.webp",
+    icon: "/club-escudo-villa-mitre-logo-png_seeklogo-461955.webp",
   },
 };
 

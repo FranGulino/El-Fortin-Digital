@@ -1,4 +1,4 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser, clerkClient } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import Header from "@/components/Header";
 import Image from "next/image";
@@ -118,6 +118,59 @@ export default async function HinchaPage() {
 
   const worstResult = worstByLoss ?? anyDraw;
 
+  // 6. Ranking General de Hinchas (Fidelidad en El Fortín)
+  // Contamos la cantidad de partidos presenciales jugados en El Fortín de cada usuario
+  const allLocalPresencialAttendances = await prisma.attendance.findMany({
+    where: {
+      type: "PRESENCIAL",
+      match: {
+        homeTeam: "Villa Mitre",
+        goalsVM: { not: null },
+        goalsOpponent: { not: null },
+      },
+    },
+    select: {
+      userId: true,
+    },
+  });
+
+  const attendanceCounts: Record<string, number> = {};
+  allLocalPresencialAttendances.forEach((att) => {
+    attendanceCounts[att.userId] = (attendanceCounts[att.userId] || 0) + 1;
+  });
+
+  // Obtenemos los usuarios registrados de Clerk
+  let ranking: Array<{ id: string; name: string; imageUrl: string; count: number; rankName: string }> = [];
+  try {
+    const clerk = await clerkClient();
+    const clerkUsersResponse = await clerk.users.getUserList();
+    const clerkUsers = clerkUsersResponse.data;
+
+    ranking = clerkUsers
+      .map((u) => {
+        const count = attendanceCounts[u.id] || 0;
+        const name = `${u.firstName ?? ""} ${u.lastName ?? ""}`.trim() || u.username || "Hincha Anónimo";
+        
+        let rankName = "Hincha de Tribuna";
+        if (count >= 8) {
+          rankName = "Abonado de Corazón";
+        } else if (count >= 4) {
+          rankName = "Grito de Popular";
+        }
+
+        return {
+          id: u.id,
+          name,
+          imageUrl: u.imageUrl,
+          count,
+          rankName,
+        };
+      })
+      .sort((a, b) => b.count - a.count);
+  } catch (error) {
+    console.error("Error al obtener usuarios de Clerk para el ranking:", error);
+  }
+
   const fullName = user
     ? `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || user.username || "Hincha Tricolor"
     : "Hincha Tricolor";
@@ -148,7 +201,7 @@ export default async function HinchaPage() {
             {/* Escudo marca de agua original */}
             <div className="absolute right-4 bottom-4 h-28 w-28 opacity-[0.03] pointer-events-none">
               <Image
-                src="/club-villa-mitre-bahia-580x580.webp"
+                src="/club-escudo-villa-mitre-logo-png_seeklogo-461955.webp"
                 alt="Villa Mitre Watermark"
                 width={112}
                 height={112}
@@ -368,7 +421,63 @@ export default async function HinchaPage() {
 
         </div>
 
-        {/* 4. Tabla del Historial de Asistencia General con pestañas de Local y Visitante/TV */}
+        {/* 4. Tabla de Posiciones / Ranking de Hinchas */}
+        {ranking.length > 0 && (
+          <div className="p-6 rounded-[8px] bg-[#1d211e] border border-zinc-850 space-y-4 w-full">
+            <div className="flex items-center gap-2 border-b border-zinc-800 pb-2">
+              <span className="text-base">{"🏆"}</span>
+              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                {"Tabla de Posiciones de la Hinchada (Fidelidad en El Fortín)"}
+              </h3>
+            </div>
+            
+            <div className="divide-y divide-zinc-850/60 max-h-[350px] overflow-y-auto pr-2">
+              {ranking.map((row, idx) => {
+                const isMe = row.id === userId;
+                const medal = idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : `${idx + 1}°`;
+                return (
+                  <div 
+                    key={row.id} 
+                    className={`flex items-center justify-between py-3 px-2 rounded-[6px] transition-colors ${
+                      isMe ? "bg-[#2d6a4f]/10 border border-[#2d6a4f]/25" : ""
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="w-8 text-sm font-mono text-zinc-400 font-black">{medal}</span>
+                      <div className="h-8 w-8 overflow-hidden rounded-full border border-zinc-800 bg-zinc-950 flex items-center justify-center">
+                        <img
+                          src={row.imageUrl}
+                          alt={row.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-sm font-bold text-white flex items-center gap-1.5">
+                          {row.name}
+                          {isMe && (
+                            <span className="bg-[#2d6a4f]/30 border border-[#2d6a4f]/50 text-[9px] text-green-400 font-extrabold px-1.5 py-0.5 rounded-[4px] uppercase tracking-wider scale-90">
+                              {"Tú"}
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-[9px] text-[#2d6a4f] font-bold uppercase tracking-wider block mt-0.5">
+                          {row.rankName}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="text-right">
+                      <span className="text-lg font-black text-white font-sans">{row.count}</span>
+                      <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">{"Partidos"}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* 5. Tabla del Historial de Asistencia General con pestañas de Local y Visitante/TV */}
         <HinchaHistorial matches={matches as any} userId={userId} />
 
       </main>

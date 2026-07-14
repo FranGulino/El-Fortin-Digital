@@ -16,9 +16,9 @@ export default function Header() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo & Marca */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative h-10 w-10 overflow-hidden rounded-md bg-[#1d211e] p-1 border border-zinc-800 transition-colors group-hover:border-[#2d6a4f]/50">
+          <div className="relative h-10 w-10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
             <Image
-              src="/club-villa-mitre-bahia-580x580.webp"
+              src="/club-escudo-villa-mitre-logo-png_seeklogo-461955.webp"
               alt="Escudo Villa Mitre"
               width={40}
               height={40}

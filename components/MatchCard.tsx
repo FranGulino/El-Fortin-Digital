@@ -110,12 +110,12 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
 
     if (isVM) {
       return (
-        <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full bg-zinc-900 p-1 border border-zinc-800">
+        <div className="relative h-12 w-12 flex-shrink-0 flex items-center justify-center">
           <Image
-            src="/club-villa-mitre-bahia-580x580.webp"
+            src="/club-escudo-villa-mitre-logo-png_seeklogo-461955.webp"
             alt="Villa Mitre"
             fill
-            className="object-contain p-1"
+            className="object-contain"
           />
         </div>
       );

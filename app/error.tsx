@@ -22,9 +22,9 @@ export default function Error({
 
       <div className="relative z-10 max-w-md space-y-6 flex flex-col items-center">
         {/* Escudo del club */}
-        <div className="relative h-16 w-16 overflow-hidden rounded-full border border-[#2d6a4f]/35 bg-[#1d211e] p-1.5 shadow-lg">
+        <div className="relative h-16 w-16 flex items-center justify-center">
           <Image
-            src="/club-villa-mitre-bahia-580x580.webp"
+            src="/club-escudo-villa-mitre-logo-png_seeklogo-461955.webp"
             alt="Escudo Villa Mitre"
             width={64}
             height={64}
