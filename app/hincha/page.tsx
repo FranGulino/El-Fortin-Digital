@@ -101,21 +101,22 @@ export default async function HinchaPage() {
     ? Math.round((distanciaWins / userDistanciaAttendances.length) * 100)
     : 0;
 
-  // 5. Ranking de Goleadores Presenciados de Local
-  const scorersMap: Record<string, number> = {};
-  userLocalAttendances.forEach((match) => {
-    match.scorers.forEach((scorer) => {
-      const cleanName = scorer.trim();
-      if (cleanName) {
-        scorersMap[cleanName] = (scorersMap[cleanName] || 0) + 1;
-      }
-    });
-  });
+  // 5. Mejor y Peor resultado presenciado en El Fortín
+  // Mejor: victoria con mayor diferencia de goles
+  const bestResult = userLocalAttendances
+    .filter((m) => m.goalsVM! > m.goalsOpponent!)
+    .sort((a, b) => (b.goalsVM! - b.goalsOpponent!) - (a.goalsVM! - a.goalsOpponent!))[0] ?? null;
 
-  const topScorers = Object.entries(scorersMap)
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 3);
+  // Peor: primero buscamos la derrota con mayor diferencia en contra
+  // Si no hay derrotas, mostramos cualquier empate
+  const worstByLoss = userLocalAttendances
+    .filter((m) => m.goalsVM! < m.goalsOpponent!)
+    .sort((a, b) => (a.goalsVM! - a.goalsOpponent!) - (b.goalsVM! - b.goalsOpponent!))[0] ?? null;
+
+  const anyDraw = userLocalAttendances
+    .find((m) => m.goalsVM! === m.goalsOpponent!) ?? null;
+
+  const worstResult = worstByLoss ?? anyDraw;
 
   const fullName = user
     ? `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || user.username || "Hincha Tricolor"
@@ -301,33 +302,70 @@ export default async function HinchaPage() {
 
         </div>
 
-        {/* Fila 3: Ranking de Goleadores de Local (Ancho Completo) */}
-        <div className="p-6 rounded-[8px] bg-[#1d211e] border border-zinc-850 space-y-4 w-full">
-          <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-800 pb-2">
-            {"Tus Goles Presenciados de Local"}
-          </h3>
-          {topScorers.length === 0 ? (
-            <p className="text-xs text-zinc-500 italic py-4 text-center">
-              {"Registrá partidos con goles a favor de Villa Mitre de local para armar tu ranking de goleadores presenciados."}
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-              {topScorers.map((scorer, idx) => (
-                <div key={scorer.name} className="relative p-4 rounded-[8px] bg-zinc-950/30 border border-zinc-900 flex flex-col justify-between items-center text-center">
-                  <span className="absolute top-2 left-2 text-[10px] font-mono text-zinc-700">
-                    {"#"} {idx + 1}
-                  </span>
-                  <span className="text-2xl mt-1">{"⚽"}</span>
-                  <div className="mt-2 text-center">
-                    <span className="text-xs font-bold text-white block truncate max-w-[150px]">{scorer.name}</span>
-                    <span className="text-[10px] text-green-500 font-extrabold block mt-0.5 uppercase tracking-wider">
-                      {scorer.count} {scorer.count === 1 ? "Gol" : "Goles"}
-                    </span>
-                  </div>
-                </div>
-              ))}
+        {/* Fila 3: Mejor y Peor Resultado Presenciado en El Fortín */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          {/* Mejor Resultado */}
+          <div className="p-6 rounded-[8px] bg-gradient-to-br from-[#0d3d28]/40 via-[#1d211e] to-[#111412] border border-[#2d6a4f]/40 space-y-3">
+            <div className="flex items-center gap-2 border-b border-[#2d6a4f]/20 pb-2">
+              <span className="text-base">{"🏆"}</span>
+              <h3 className="text-xs font-bold text-green-400 uppercase tracking-widest">{"Mejor Resultado Presenciado"}</h3>
             </div>
-          )}
+            {bestResult ? (
+              <div className="space-y-2 pt-1">
+                <p className="text-2xl font-black text-white tracking-tight">
+                  {`${bestResult.goalsVM} - ${bestResult.goalsOpponent}`}
+                  <span className="text-sm font-semibold text-zinc-400 ml-2">{`vs. ${bestResult.awayTeam}`}</span>
+                </p>
+                <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
+                  <span>{`Fecha ${bestResult.fixtureRound}`}</span>
+                  <span>{"•"}</span>
+                  <span className="text-green-500">
+                    {`+${bestResult.goalsVM! - bestResult.goalsOpponent!} goles de diferencia`}
+                  </span>
+                </div>
+                {bestResult.scorers.length > 0 && (
+                  <p className="text-[10px] text-zinc-500 italic">{"⚽ "}{bestResult.scorers.join(", ")}</p>
+                )}
+              </div>
+            ) : (
+              <p className="text-xs text-zinc-500 italic pt-2">{"Aún no presenciaste una victoria en El Fortín."}</p>
+            )}
+          </div>
+
+          {/* Peor Resultado */}
+          <div className="p-6 rounded-[8px] bg-gradient-to-br from-black via-[#141414] to-[#111412] border border-zinc-800 space-y-3">
+            <div className="flex items-center gap-2 border-b border-zinc-800 pb-2">
+              <span className="text-base">{worstResult && worstResult.goalsVM! < worstResult.goalsOpponent! ? "😞" : "🤝"}</span>
+              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                {worstResult && worstResult.goalsVM! < worstResult.goalsOpponent!
+                  ? "Peor Derrota Presenciada"
+                  : "Empate Presenciado"}
+              </h3>
+            </div>
+            {worstResult ? (
+              <div className="space-y-2 pt-1">
+                <p className="text-2xl font-black tracking-tight" style={{ color: worstResult.goalsVM! < worstResult.goalsOpponent! ? '#6b7280' : '#ffffff' }}>
+                  {`${worstResult.goalsVM} - ${worstResult.goalsOpponent}`}
+                  <span className="text-sm font-semibold text-zinc-400 ml-2">{`vs. ${worstResult.awayTeam}`}</span>
+                </p>
+                <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
+                  <span>{`Fecha ${worstResult.fixtureRound}`}</span>
+                  {worstResult.goalsVM! < worstResult.goalsOpponent! && (
+                    <>
+                      <span>{"•"}</span>
+                      <span className="text-zinc-600">
+                        {`-${worstResult.goalsOpponent! - worstResult.goalsVM!} goles de diferencia`}
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-zinc-500 italic pt-2">{"Aún no registrás derrotas ni empates en El Fortín."}</p>
+            )}
+          </div>
+
         </div>
 
         {/* 4. Tabla del Historial de Asistencia General con pestañas de Local y Visitante/TV */}

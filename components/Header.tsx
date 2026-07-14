@@ -88,12 +88,12 @@ export default function Header() {
           
           <Show when="signed-out">
             <div className="flex items-center gap-5">
-              <SignInButton mode="modal">
+              <SignInButton mode="redirect" fallbackRedirectUrl="/">
                 <button className="text-xs font-bold tracking-wider uppercase text-zinc-300 hover:text-white transition-colors">
                   Acceso
                 </button>
               </SignInButton>
-              <SignUpButton mode="modal">
+              <SignUpButton mode="redirect" fallbackRedirectUrl="/">
                 <button className="inline-flex h-9 items-center justify-center rounded-[8px] border border-[#2d6a4f]/50 hover:border-[#2d6a4f] bg-transparent px-5 text-xs font-bold tracking-wider uppercase text-zinc-200 hover:text-white transition-all hover:bg-[#2d6a4f]/10 active:scale-95">
                   Registrarse
                 </button>

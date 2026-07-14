@@ -23,7 +23,7 @@ export default async function HomePage() {
     <div className="flex flex-col min-h-screen bg-[#111412] text-[#e1e3de]">
       <Header />
 
-      <main className="flex-1 space-y-16 pb-16">
+      <main className="flex-1 space-y-6 pb-12">
         {/* Hero Section overlay con cabecera flotante y cuenta regresiva al costado */}
         <section className="relative min-h-[700px] lg:h-[700px] flex items-center justify-start overflow-hidden py-20 lg:py-0">
           {/* Imagen de fondo de la hinchada */}
@@ -76,7 +76,7 @@ export default async function HomePage() {
                     </>
                   ) : (
                     <>
-                      <SignInButton mode="modal">
+                      <SignInButton mode="redirect" fallbackRedirectUrl="/">
                         <button className="inline-flex h-11 items-center justify-center rounded-[8px] bg-[#2d6a4f] hover:bg-[#2d6a4f]/90 active:bg-green-800 transition-all text-sm font-bold text-white px-6 active:scale-95 shadow-lg shadow-green-950/20">
                           {"Ingresar a la Bitácora"}
                         </button>
@@ -92,9 +92,9 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              {/* Columna Derecha: Reloj de Cuenta Regresiva al Próximo Partido */}
+              {/* Columna Derecha: Reloj de Cuenta Regresiva al Próximo Partido (solo logueados) */}
               <div className="lg:col-span-5 w-full">
-                {nextMatch && (
+                {userId && nextMatch && (
                   <div className="relative overflow-hidden rounded-[8px] border border-[#414942]/60 bg-[#1d211e]/90 backdrop-blur-md p-6 sm:p-8 space-y-6 shadow-2xl shadow-black/80">
                     {/* Efecto resplandor sutil verde */}
                     <div className="absolute inset-0 bg-gradient-to-br from-green-950/15 via-transparent to-transparent pointer-events-none animate-pulse" />
@@ -123,7 +123,7 @@ export default async function HomePage() {
         </section>
 
         {/* Sección de Frases (Impacto) — ahora directamente debajo del Hero */}
-        <section id="features" className="max-w-7xl mx-auto px-4 py-8 text-center space-y-4 scroll-mt-24">
+        <section id="features" className="max-w-7xl mx-auto px-4 pt-4 pb-2 text-center space-y-3 scroll-mt-24">
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white uppercase font-sans">
             {"El Club de la Ciudad"}
           </h2>
@@ -134,7 +134,7 @@ export default async function HomePage() {
         </section>
 
         {/* Sección del Mapa: Nuestra Casa */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 space-y-6">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 space-y-5">
           {/* Encabezado de Sección */}
           <div className="text-center space-y-3">
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white uppercase font-sans">
