@@ -122,10 +122,14 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
     }
 
     // Escudo genérico premium para los rivales utilizando sus siglas
-    const initials = teamName
-      .replace("(MdP)", "")
-      .trim()
-      .split(" ")
+    const cleanName = teamName
+      .replace(/\(.*?\)/g, "") // Remueve todo lo que esté entre paréntesis, ej: (Rawson), (MdP)
+      .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, "") // Remueve símbolos
+      .trim();
+    
+    const initials = cleanName
+      .split(/\s+/)
+      .filter(Boolean)
       .map((w) => w[0])
       .join("")
       .slice(0, 2)

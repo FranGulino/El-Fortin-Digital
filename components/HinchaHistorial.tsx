@@ -101,18 +101,18 @@ export default function HinchaHistorial({ matches, userId }: HinchaHistorialProp
             const isLocal = match.homeTeam === "Villa Mitre";
             const userAtt = match.attendances.find((att) => att.userId === userId);
             
-            // Deducimos el color del marcador
+            // Deducimos el color del marcador en base a la paleta tricolor
             let scoreColor = "text-white";
             if (match.goalsVM !== null && match.goalsOpponent !== null) {
-              if (match.goalsVM > match.goalsOpponent) scoreColor = "text-green-500";
-              else if (match.goalsVM < match.goalsOpponent) scoreColor = "text-red-500";
-              else scoreColor = "text-zinc-400";
+              if (match.goalsVM > match.goalsOpponent) scoreColor = "text-[#4ade80]"; // Verde brillante
+              else if (match.goalsVM < match.goalsOpponent) scoreColor = "text-zinc-500"; // Gris/Negro para derrotas, sin rojo!
+              else scoreColor = "text-white"; // Blanco para empates
             }
 
             return (
-              <div key={match.id} className="py-3.5 flex justify-between items-center text-xs hover:bg-zinc-900/10 transition-colors rounded-sm px-1">
-                <div className="space-y-1">
-                  <p className="font-bold text-white tracking-tight">
+              <div key={match.id} className="py-3.5 flex justify-between items-center text-xs hover:bg-zinc-900/10 transition-colors rounded-sm px-1 gap-4">
+                <div className="space-y-1 min-w-0 flex-1">
+                  <p className="font-bold text-white tracking-tight truncate">
                     {match.homeTeam === "Villa Mitre" ? "VILLA MITRE" : match.homeTeam} {"vs."} {match.awayTeam === "Villa Mitre" ? "VILLA MITRE" : match.awayTeam}
                   </p>
                   <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
@@ -126,7 +126,7 @@ export default function HinchaHistorial({ matches, userId }: HinchaHistorialProp
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 flex-shrink-0">
                   <span className={`font-mono font-black text-sm tabular-nums ${scoreColor}`}>
                     {match.goalsVM} {"-"} {match.goalsOpponent}
                   </span>
@@ -135,7 +135,7 @@ export default function HinchaHistorial({ matches, userId }: HinchaHistorialProp
                       ? "bg-[#2d6a4f]/20 text-[#2d6a4f] border border-[#2d6a4f]/30"
                       : "bg-zinc-800 text-zinc-450 border border-zinc-700/50"
                   }`}>
-                    {userAtt?.type === "PRESENCIAL" ? "🏟️ Cancha" : "📺 TV / Radio"}
+                    {userAtt?.type === "PRESENCIAL" ? "🏟️ Cancha" : "📺 TV"}
                   </span>
                 </div>
               </div>
