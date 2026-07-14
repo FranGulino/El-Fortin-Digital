@@ -48,8 +48,8 @@ export default async function HomePage() {
               <div className="lg:col-span-7 space-y-8 text-left">
                 {/* Título Principal */}
                 <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-[1.1] font-sans">
-                  {"Preservando la Identidad"} <br />
-                  {"Tricolor en la Era Digital"}
+                  {"A Villa Mitre yo lo sigo"} <br />
+                  {"siempre a todos lados..."}
                 </h1>
 
                 {/* Subtítulo */}
@@ -147,9 +147,9 @@ export default async function HomePage() {
             {/* Card 2 */}
             <div className="p-6 rounded-[8px] border border-zinc-800 bg-[#1d211e] space-y-3">
               <div className="text-2xl text-[#2d6a4f]">{"📊"}</div>
-              <h3 className="text-base font-bold text-white">{"Amuleto de la Suerte"}</h3>
+              <h3 className="text-base font-bold text-white">{"Rendimiento en Casa"}</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                {"Calculá tus estadísticas de efectividad personales. Descubrí qué porcentaje de puntos obtuvo Villa Mitre cuando estuviste alentando."}
+                {"Analizá tu asistencia a El Fortín, calculá la efectividad de victorias de local y descubrí el ranking de goleadores que presenciaste en vivo."}
               </p>
             </div>
             {/* Card 3 */}

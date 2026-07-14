@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import Header from "@/components/Header";
 import Image from "next/image";
+import HinchaHistorial from "@/components/HinchaHistorial";
 
 export const revalidate = 0; // Respuesta instantánea al registrar asistencia
 
@@ -82,6 +83,40 @@ export default async function HinchaPage() {
     stats.rank = "Hincha de Tribuna";
   }
 
+  // 4. Estadísticas comparativas a la distancia (Remoto o visitante)
+  const userDistanciaAttendances = playedMatches.filter((match) => {
+    const isLocal = match.homeTeam === "Villa Mitre";
+    const userAtt = match.attendances.find((att) => att.userId === userId);
+    return userAtt && (userAtt.type === "A_LA_DISTANCIA" || !isLocal);
+  });
+
+  let distanciaWins = 0;
+  userDistanciaAttendances.forEach((match) => {
+    if (match.goalsVM! > match.goalsOpponent!) {
+      distanciaWins += 1;
+    }
+  });
+
+  const distanciaWinPercentage = userDistanciaAttendances.length > 0
+    ? Math.round((distanciaWins / userDistanciaAttendances.length) * 100)
+    : 0;
+
+  // 5. Ranking de Goleadores Presenciados de Local
+  const scorersMap: Record<string, number> = {};
+  userLocalAttendances.forEach((match) => {
+    match.scorers.forEach((scorer) => {
+      const cleanName = scorer.trim();
+      if (cleanName) {
+        scorersMap[cleanName] = (scorersMap[cleanName] || 0) + 1;
+      }
+    });
+  });
+
+  const topScorers = Object.entries(scorersMap)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
+
   const fullName = user
     ? `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || user.username || "Hincha Tricolor"
     : "Hincha Tricolor";
@@ -89,10 +124,10 @@ export default async function HinchaPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#111412] text-[#e1e3de] relative overflow-hidden">
       
-      {/* Header envuelto de forma limpia para que flote por encima del contenido */}
+      {/* Header envuelto de forma limpia */}
       <Header />
 
-      <main className="flex-1 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 pb-16 space-y-8 font-sans relative z-10">
+      <main className="relative z-10 flex-1 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 pb-16 space-y-8 font-sans">
         
         {/* Cabecera de Página */}
         <div className="border-b border-[#414942]/20 pb-4">
@@ -134,7 +169,7 @@ export default async function HinchaPage() {
                     </div>
                   )}
                 </div>
-                <div className="space-y-1">
+                <div className="flex flex-col items-start gap-1.5">
                   <h2 className="text-base font-bold text-white tracking-tight leading-none font-sans">
                     {fullName}
                   </h2>
@@ -144,11 +179,11 @@ export default async function HinchaPage() {
                 </div>
               </div>
 
-              <div className="text-right">
+              <div className="text-right space-y-0.5">
                 <span className="text-[8px] text-zinc-500 font-bold tracking-widest block uppercase">
-                  {"HINCHA REGISTRADO"}
+                  {"Código de Hincha"}
                 </span>
-                <span className="text-[10px] font-mono font-bold text-zinc-350">
+                <span className="text-[10px] font-mono font-bold text-zinc-350 block">
                   {userId?.slice(-12).toUpperCase() ?? "CVM-HINCHA-2026"}
                 </span>
               </div>
@@ -191,22 +226,32 @@ export default async function HinchaPage() {
             </div>
           </div>
 
-          {/* Fila 2 Izquierda: Asistencia a El Fortín (Fidelidad) */}
-          <div className="p-6 rounded-[8px] bg-[#1d211e] border border-zinc-800 flex flex-col justify-between min-h-[175px]">
+          {/* Fila 2 Izquierda: Asistencia a El Fortín (Fidelidad con Números Gigantes Resaltados) */}
+          <div className="p-6 rounded-[8px] bg-gradient-to-br from-[#1d211e] to-zinc-900/30 border border-zinc-800 flex flex-col justify-between min-h-[200px]">
             <div>
               <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-800 pb-2 mb-3">
                 {"Asistencia a El Fortín"}
               </h3>
-              <p className="text-[11px] text-zinc-400 leading-relaxed">
-                {"Porcentaje de partidos de local a los que asististe del total de partidos de local disputados en el torneo."}
-              </p>
             </div>
-            <div className="pt-4">
-              <div className="flex justify-between items-baseline mb-1">
-                <span className="text-[9px] text-zinc-500 font-bold uppercase">{"Presencia"}</span>
-                <span className="text-lg font-black text-white">{stats.localAttended} {"/"} {stats.localPlayed} {"("}{stats.attendancePercentage}{"%)"}</span>
+            
+            <div className="flex justify-between items-center py-2">
+              <div className="space-y-1">
+                <span className="text-[9px] text-zinc-500 font-bold uppercase block tracking-wider">{"Partidos Asistidos"}</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-extrabold text-white tracking-tight">{stats.localAttended}</span>
+                  <span className="text-zinc-650 text-xl">{"/"}</span>
+                  <span className="text-zinc-550 text-xl font-medium">{stats.localPlayed}</span>
+                </div>
               </div>
-              <div className="w-full h-1.5 bg-zinc-950 rounded-full overflow-hidden">
+
+              <div className="text-right space-y-1">
+                <span className="text-[9px] text-zinc-500 font-bold uppercase block tracking-wider">{"Fidelidad"}</span>
+                <span className="text-4xl font-extrabold text-[#2d6a4f] tracking-tighter">{stats.attendancePercentage}%</span>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <div className="w-full h-2 bg-zinc-950 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-[#2d6a4f]" 
                   style={{ width: `${stats.attendancePercentage}%` }}
@@ -215,22 +260,34 @@ export default async function HinchaPage() {
             </div>
           </div>
 
-          {/* Fila 2 Derecha: Efectividad de Victorias de Local */}
-          <div className="p-6 rounded-[8px] bg-[#1d211e] border border-zinc-800 flex flex-col justify-between min-h-[175px]">
+          {/* Fila 2 Derecha: Efectividad de Victorias de Local (Números Gigantes Resaltados) */}
+          <div className="p-6 rounded-[8px] bg-gradient-to-br from-[#1d211e] to-zinc-900/30 border border-zinc-800 flex flex-col justify-between min-h-[200px]">
             <div>
               <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-800 pb-2 mb-3">
-                {"Efectividad de Victorias de Local"}
+                {"Rendimiento de Local"}
               </h3>
-              <p className="text-[11px] text-zinc-400 leading-relaxed">
-                {"Porcentaje de partidos en casa que terminaron en victoria en las fechas que estuviste en la tribuna."}
-              </p>
             </div>
-            <div className="pt-4">
-              <div className="flex justify-between items-baseline mb-1">
-                <span className="text-[9px] text-zinc-500 font-bold uppercase">{"Efectividad"}</span>
-                <span className="text-lg font-black text-[#2d6a4f]">{stats.winPercentage}%</span>
+
+            <div className="flex justify-between items-center py-2">
+              <div className="space-y-1">
+                <span className="text-[9px] text-zinc-500 font-bold uppercase block tracking-wider">{"Puntos Obtenidos"}</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-extrabold text-white tracking-tight">
+                    {stats.localWins * 3 + stats.localDraws}
+                  </span>
+                  <span className="text-zinc-650 text-xl">{"/"}</span>
+                  <span className="text-zinc-550 text-xl font-medium">{stats.localAttended * 3}</span>
+                </div>
               </div>
-              <div className="w-full h-1.5 bg-zinc-950 rounded-full overflow-hidden">
+
+              <div className="text-right space-y-1">
+                <span className="text-[9px] text-zinc-500 font-bold uppercase block tracking-wider">{"Efectividad"}</span>
+                <span className="text-4xl font-extrabold text-[#2d6a4f] tracking-tighter">{stats.winPercentage}%</span>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <div className="w-full h-2 bg-zinc-950 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-[#2d6a4f]" 
                   style={{ width: `${stats.winPercentage}%` }}
@@ -241,52 +298,41 @@ export default async function HinchaPage() {
 
         </div>
 
-        {/* 3. Tabla del Historial de Asistencia General */}
-        <section className="p-6 rounded-[8px] bg-[#1d211e] border border-zinc-800 space-y-4">
+        {/* Fila 3: Ranking de Goleadores de Local (Ancho Completo) */}
+        <div className="p-6 rounded-[8px] bg-[#1d211e] border border-zinc-850 space-y-4 w-full">
           <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-800 pb-2">
-            {"Mi Historial de Asistencia Completo"}
+            {"Tus Goles Presenciados de Local"}
           </h3>
-          {userAttendances.length === 0 ? (
-            <p className="text-xs text-zinc-500 italic text-center py-4">
-              {"Aún no registraste ninguna asistencia en el fixture."}
+          {topScorers.length === 0 ? (
+            <p className="text-xs text-zinc-500 italic py-4 text-center">
+              {"Registrá partidos con goles a favor de Villa Mitre de local para armar tu ranking de goleadores presenciados."}
             </p>
           ) : (
-            <div className="divide-y divide-[#414942]/20">
-              {userAttendances.map((match) => {
-                const isLocal = match.homeTeam === "Villa Mitre";
-                const userAtt = match.attendances.find((att) => att.userId === userId);
-                return (
-                  <div key={match.id} className="py-3 flex justify-between items-center text-xs">
-                    <div className="space-y-1">
-                      <p className="font-bold text-white">
-                        {match.homeTeam} {"vs."} {match.awayTeam}
-                      </p>
-                      <p className="text-[10px] text-zinc-500 font-semibold uppercase">
-                        {"Fecha"} {match.fixtureRound} {"—"} {isLocal ? "Local (El Fortín)" : "Visitante"}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="font-mono text-zinc-300 font-bold">
-                        {match.goalsVM} {"-"} {match.goalsOpponent}
-                      </span>
-                      <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${
-                        userAtt?.type === "PRESENCIAL"
-                          ? "bg-[#2d6a4f]/20 text-[#2d6a4f] border border-[#2d6a4f]/30"
-                          : "bg-zinc-800 text-zinc-450 border border-zinc-700/50"
-                      }`}>
-                        {userAtt?.type === "PRESENCIAL" ? "🏟️ En Cancha" : "📺 Distancia"}
-                      </span>
-                    </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              {topScorers.map((scorer, idx) => (
+                <div key={scorer.name} className="relative p-4 rounded-[8px] bg-zinc-950/30 border border-zinc-900 flex flex-col justify-between items-center text-center">
+                  <span className="absolute top-2 left-2 text-[10px] font-mono text-zinc-700">
+                    {"#"} {idx + 1}
+                  </span>
+                  <span className="text-2xl mt-1">{"⚽"}</span>
+                  <div className="mt-2 text-center">
+                    <span className="text-xs font-bold text-white block truncate max-w-[150px]">{scorer.name}</span>
+                    <span className="text-[10px] text-green-500 font-extrabold block mt-0.5 uppercase tracking-wider">
+                      {scorer.count} {scorer.count === 1 ? "Gol" : "Goles"}
+                    </span>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           )}
-        </section>
+        </div>
+
+        {/* 4. Tabla del Historial de Asistencia General con pestañas de Local y Visitante/TV */}
+        <HinchaHistorial matches={matches as any} userId={userId} />
 
       </main>
 
-      <footer className="relative z-10 border-t border-zinc-900 bg-zinc-950 py-8 text-center">
+      <footer className="border-t border-zinc-900 bg-zinc-950 py-8 text-center">
         <p className="text-[10px] text-zinc-600 font-bold tracking-wider uppercase">
           {"El Fortín Digital — Bitácora Personal de Villa Mitre © 2026"}
         </p>
