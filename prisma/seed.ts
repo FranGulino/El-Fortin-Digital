@@ -162,7 +162,7 @@ async function main() {
       scorers: ["Tomás Ibarra", "Carlos Battigelli", "Leonel Monti"],
     },
     {
-      date: new Date("2026-07-19T15:30:00Z"), // Próximo partido (aún no disputado)
+      date: new Date("2026-07-26T18:00:00Z"), // Reprogramado al 26 de julio, probablemente 15hs (18hs UTC)
       fixtureRound: 18,
       phase: MatchPhase.FASE_1,
       homeTeam: "Sol de Mayo",
