@@ -46,15 +46,15 @@ export default async function HomePage() {
               
               {/* Columna Izquierda: Textos y Botones de Acceso */}
               <div className="lg:col-span-7 space-y-8 text-left">
-                {/* Título Principal */}
-                <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-[1.1] font-sans">
-                  {"A Villa Mitre yo lo sigo"} <br />
-                  {"siempre a todos lados..."}
+                {/* Título Principal bicolor (blanco + verde Villa Mitre) */}
+                <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.1] font-sans">
+                  <span className="text-white">{"A Villa Mitre yo lo sigo"}</span><br />
+                  <span className="text-[#2d6a4f]">{"siempre a todos lados..."}</span>
                 </h1>
 
                 {/* Subtítulo */}
                 <p className="text-sm sm:text-base text-zinc-350 leading-relaxed max-w-xl">
-                  {"El Fortín Digital es la bitácora oficial de los simpatizantes del Club Villa Mitre. Un registro histórico, formal y exhaustivo de nuestra presencia en cada jornada deportiva."}
+                  {"El Fortín de Maipú y Necochea es la bitácora oficial de los simpatizantes del Club Villa Mitre. Un registro histórico, formal y exhaustivo de nuestra presencia en cada jornada deportiva."}
                 </p>
 
                 {/* Botones de acción del Hero */}
@@ -166,7 +166,7 @@ export default async function HomePage() {
 
       <footer className="border-t border-zinc-900 bg-zinc-950 py-8 text-center">
         <p className="text-[10px] text-zinc-600 font-bold tracking-wider uppercase">
-          {"El Fortín Digital — Bitácora Personal de Villa Mitre © 2026"}
+          {"El Fortín de Maipú y Necochea — Bitácora Personal de Villa Mitre © 2026"}
         </p>
       </footer>
     </div>

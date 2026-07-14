@@ -211,17 +211,20 @@ export default async function HinchaPage() {
               {"Historial en El Fortín"}
             </h3>
             <div className="grid grid-cols-3 gap-3 text-center my-auto">
-              <div className="p-3.5 rounded-[8px] bg-green-950/20 border border-green-900/30">
+              {/* Bloque Verde (Victorias) */}
+              <div className="p-3.5 rounded-[8px] bg-[#105238]/15 border border-[#2d6a4f]/30">
                 <span className="text-[9px] text-green-400 font-bold uppercase tracking-wider block">{"Victorias"}</span>
-                <span className="text-xl font-black text-white mt-1 block">{stats.localWins}</span>
+                <span className="text-xl font-black text-green-400 mt-1 block">{stats.localWins}</span>
               </div>
-              <div className="p-3.5 rounded-[8px] bg-zinc-950/30 border border-zinc-850">
-                <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider block">{"Empates"}</span>
+              {/* Bloque Blanco (Empates) */}
+              <div className="p-3.5 rounded-[8px] bg-white/5 border border-white/15">
+                <span className="text-[9px] text-zinc-200 font-bold uppercase tracking-wider block">{"Empates"}</span>
                 <span className="text-xl font-black text-white mt-1 block">{stats.localDraws}</span>
               </div>
-              <div className="p-3.5 rounded-[8px] bg-red-950/15 border border-red-900/20">
-                <span className="text-[9px] text-red-400 font-bold uppercase tracking-wider block">{"Derrotas"}</span>
-                <span className="text-xl font-black text-white mt-1 block">{stats.localLosses}</span>
+              {/* Bloque Negro (Derrotas) */}
+              <div className="p-3.5 rounded-[8px] bg-black/45 border border-zinc-900">
+                <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider block">{"Derrotas"}</span>
+                <span className="text-xl font-black text-zinc-450 mt-1 block">{stats.localLosses}</span>
               </div>
             </div>
           </div>
@@ -334,7 +337,7 @@ export default async function HinchaPage() {
 
       <footer className="border-t border-zinc-900 bg-zinc-950 py-8 text-center">
         <p className="text-[10px] text-zinc-600 font-bold tracking-wider uppercase">
-          {"El Fortín Digital — Bitácora Personal de Villa Mitre © 2026"}
+          {"El Fortín de Maipú y Necochea — Bitácora Personal de Villa Mitre © 2026"}
         </p>
       </footer>
     </div>

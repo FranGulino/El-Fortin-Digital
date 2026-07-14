@@ -56,32 +56,35 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
     });
   };
 
-  // Badge de resultado (Win/Draw/Loss) según especificación técnica (colores del club)
+  // Badge de resultado (V/E/D) con colores tricolores de Villa Mitre
   const badgeClasses = () => {
     switch (resultType) {
       case "VICTORIA":
-        return "bg-green-700 text-white border border-green-600/30 font-black";
+        return "bg-[#2d6a4f] text-white border border-[#2d6a4f]/50 font-black shadow-sm shadow-green-900/30";
       case "DERROTA":
-        return "bg-[#8a2c2c] text-white border border-[#8a2c2c]/30 font-black";
+        return "bg-zinc-950 text-zinc-400 border border-zinc-800 font-black";
       case "EMPATE":
-        return "bg-[#414942] text-zinc-200 border border-zinc-700/50 font-black";
+        return "bg-white/10 text-white border border-white/20 font-black";
       case "FUTURO":
       default:
         return "bg-zinc-900 text-zinc-500 border border-zinc-800 font-bold";
     }
   };
 
-  // Clases condicionales facheras para el fondo y bordes
+  // Clases condicionales tricolores para el fondo y bordes de la tarjeta
   const cardClasses = () => {
     let base = "flex flex-col justify-between p-6 rounded-[8px] border transition-all duration-300 hover:scale-[1.01] group ";
     
     switch (resultType) {
       case "VICTORIA":
-        return base + "border-[#2d6a4f]/30 bg-gradient-to-br from-[#105238]/15 via-[#1d211e] to-[#111412] hover:border-green-500/50 hover:shadow-lg hover:shadow-green-950/10";
+        // Verde Villa Mitre: borde y degradado verde hacia el fondo oscuro
+        return base + "border-[#2d6a4f]/50 bg-gradient-to-br from-[#0d3d28]/40 via-[#1d211e] to-[#111412] hover:border-[#2d6a4f]/80 hover:shadow-lg hover:shadow-green-950/20";
       case "DERROTA":
-        return base + "border-red-950/50 bg-gradient-to-br from-red-950/10 via-[#1d211e] to-[#111412] hover:border-red-900/30";
+        // Negro profundo: muy oscuro, casi puro negro, borde gris muy tenue
+        return base + "border-zinc-900 bg-gradient-to-br from-black via-[#141414] to-[#111412] hover:border-zinc-800";
       case "EMPATE":
-        return base + "border-zinc-850 bg-[#1d211e] hover:border-zinc-700/60";
+        // Blanco/Plata: sutil, fondo con toque blanco y borde plateado
+        return base + "border-white/10 bg-gradient-to-br from-white/5 via-[#1d211e] to-[#111412] hover:border-white/20";
       case "FUTURO":
       default:
         return base + "border-dashed border-zinc-800 bg-zinc-950/10 hover:border-[#2d6a4f]/30";
@@ -163,7 +166,11 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
           {/* Marcador Central */}
           <div className="flex flex-col items-center justify-center w-2/12">
             {isPlayed ? (
-              <div className="text-2xl font-black text-white tracking-tighter tabular-nums font-sans">
+              <div className={`text-2xl font-black tracking-tighter tabular-nums font-sans ${
+                resultType === "VICTORIA" ? "text-[#4ade80]" :
+                resultType === "EMPATE" ? "text-white" :
+                "text-zinc-500"
+              }`}>
                 {match.goalsVM !== null && match.goalsOpponent !== null ? (
                   match.homeTeam === "Villa Mitre" ? (
                     `${match.goalsVM} - ${match.goalsOpponent}`
