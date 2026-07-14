@@ -104,7 +104,7 @@ export default async function HomePage() {
                         {"Próximo Encuentro"}
                       </span>
                       <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-                        {nextMatch.homeTeam} {"vs."} {nextMatch.awayTeam}
+                        {nextMatch.homeTeam === "Villa Mitre" ? "VILLA MITRE" : nextMatch.homeTeam} {"vs."} {nextMatch.awayTeam === "Villa Mitre" ? "VILLA MITRE" : nextMatch.awayTeam}
                       </h3>
                       <p className="text-[9px] text-zinc-500 font-bold tracking-wider uppercase">
                         {"Fecha"} {nextMatch.fixtureRound} {"— Torneo Federal A"}

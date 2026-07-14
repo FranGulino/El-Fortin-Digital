@@ -113,7 +113,7 @@ export default function HinchaHistorial({ matches, userId }: HinchaHistorialProp
               <div key={match.id} className="py-3.5 flex justify-between items-center text-xs hover:bg-zinc-900/10 transition-colors rounded-sm px-1">
                 <div className="space-y-1">
                   <p className="font-bold text-white tracking-tight">
-                    {match.homeTeam} {"vs."} {match.awayTeam}
+                    {match.homeTeam === "Villa Mitre" ? "VILLA MITRE" : match.homeTeam} {"vs."} {match.awayTeam === "Villa Mitre" ? "VILLA MITRE" : match.awayTeam}
                   </p>
                   <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
                     <span>{"Fecha"} {match.fixtureRound}</span>

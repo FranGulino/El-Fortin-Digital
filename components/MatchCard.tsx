@@ -158,8 +158,11 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
           {/* Equipo Local */}
           <div className="flex flex-col items-center gap-2 w-5/12 text-center">
             <TeamShield teamName={match.homeTeam} />
-            <span className={`text-xs font-bold tracking-tight truncate w-full ${match.homeTeam === "Villa Mitre" ? "text-white" : "text-zinc-400"}`}>
-              {match.homeTeam}
+            <span className={`text-xs font-bold tracking-tight truncate w-full ${match.homeTeam === "Villa Mitre" ? "text-white font-extrabold" : "text-zinc-400"}`}>
+              {match.homeTeam === "Villa Mitre" ? "VILLA MITRE" : match.homeTeam}
+            </span>
+            <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider block mt-0.5">
+              {"Local"}
             </span>
           </div>
 
@@ -178,11 +181,11 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
                     `${match.goalsOpponent} - ${match.goalsVM}`
                   )
                 ) : (
-                  "VS"
+                  "- - -"
                 )}
               </div>
             ) : (
-              <div className="text-xs font-extrabold text-zinc-600 tracking-wider">
+              <div className="text-sm font-bold text-zinc-650 uppercase tracking-widest">
                 {"VS"}
               </div>
             )}
@@ -194,8 +197,11 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
           {/* Equipo Visitante */}
           <div className="flex flex-col items-center gap-2 w-5/12 text-center">
             <TeamShield teamName={match.awayTeam} />
-            <span className={`text-xs font-bold tracking-tight truncate w-full ${match.awayTeam === "Villa Mitre" ? "text-white" : "text-zinc-400"}`}>
-              {match.awayTeam}
+            <span className={`text-xs font-bold tracking-tight truncate w-full ${match.awayTeam === "Villa Mitre" ? "text-white font-extrabold" : "text-zinc-400"}`}>
+              {match.awayTeam === "Villa Mitre" ? "VILLA MITRE" : match.awayTeam}
+            </span>
+            <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider block mt-0.5">
+              {"Visitante"}
             </span>
           </div>
         </div>
