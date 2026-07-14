@@ -65,27 +65,28 @@ export default async function HomePage() {
                         href="/partidos"
                         className="inline-flex h-11 items-center justify-center rounded-[8px] bg-[#2d6a4f] hover:bg-[#2d6a4f]/90 active:bg-green-800 transition-all text-sm font-bold text-white px-6 active:scale-95 shadow-lg shadow-green-950/20"
                       >
-                        {"Ir a mis Partidos"}
+                        {"Ir a partidos"}
                       </Link>
                       <Link
-                        href="/partidos"
-                        className="inline-flex h-11 items-center justify-center rounded-[8px] border border-zinc-700 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-sm font-bold text-zinc-300 px-6 active:scale-95"
+                        href="/hincha"
+                        className="inline-flex h-11 items-center justify-center rounded-[8px] border border-zinc-700 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-sm font-bold text-zinc-350 px-6 active:scale-95"
                       >
-                        {"Ver Fixture Completo"}
+                        {"Ver mi Perfil"}
                       </Link>
                     </>
                   ) : (
                     <>
                       <SignInButton mode="modal">
                         <button className="inline-flex h-11 items-center justify-center rounded-[8px] bg-[#2d6a4f] hover:bg-[#2d6a4f]/90 active:bg-green-800 transition-all text-sm font-bold text-white px-6 active:scale-95 shadow-lg shadow-green-950/20">
-                          {"Iniciar Registro de Partido"}
+                          {"Ingresar a la Bitácora"}
                         </button>
                       </SignInButton>
-                      <SignInButton mode="modal">
-                        <button className="inline-flex h-11 items-center justify-center rounded-[8px] border border-zinc-700 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-sm font-bold text-zinc-300 px-6 active:scale-95">
-                          {"Consultar Historial"}
-                        </button>
-                      </SignInButton>
+                      <a
+                        href="#features"
+                        className="inline-flex h-11 items-center justify-center rounded-[8px] border border-zinc-700 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-sm font-bold text-zinc-350 px-6 active:scale-95"
+                      >
+                        {"Conocer Características"}
+                      </a>
                     </>
                   )}
                 </div>
@@ -122,7 +123,7 @@ export default async function HomePage() {
         </section>
 
         {/* Sección de Frases (Impacto) */}
-        <section className="max-w-7xl mx-auto px-4 py-8 text-center space-y-4">
+        <section id="features" className="max-w-7xl mx-auto px-4 py-8 text-center space-y-4 scroll-mt-24">
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white uppercase font-sans">
             {"El Club de la Ciudad"}
           </h2>

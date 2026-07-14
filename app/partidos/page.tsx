@@ -21,12 +21,9 @@ export default async function PartidosPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#111412] text-[#e1e3de]">
-      {/* En la bitácora, el header tiene posición relativa para no solaparse con el dashboard */}
-      <div className="relative">
-        <Header />
-      </div>
+      <Header />
 
-      <main className="flex-1 mt-4">
+      <main className="flex-1">
         <PartidosClient matches={matches} userId={userId} />
       </main>
     </div>
