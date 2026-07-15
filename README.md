@@ -10,23 +10,24 @@ La plataforma se conecta a un motor relacional en la nube para sincronizar diná
 
 ## 📸 Interfaz del Sistema (Mística & Estadísticas)
 
-| Dashboard General & Portal | Fixture & Control de Asistencia |
+| Dashboard General & Portal | El Asistente: DT Inteligente 🤖 |
 | :---: | :---: |
-| **Sección Institucional** <br> *Cuenta regresiva en tiempo real, bienvenida interactiva y geolocalización del templo de Maipú y Necochea.* | **Fixture Federal A** <br> *Filtros avanzados por sede/resultado, buscador semántico y registro condicional según la localía.* |
-| <img src="https://github.com/user-attachments/assets/daeb3760-b7d6-453f-9ce1-1bb7f5d104f6" width="100%" /> | <img src="https://github.com/user-attachments/assets/bb26902f-b8e2-41e6-a4fa-0626d3517ddb" width="100%" /> |
+| **Sección Institucional** <br> *Cuenta regresiva en tiempo real, bienvenida interactiva y geolocalización del templo de Maipú y Necochea.* | **Chatbot del Vestuario** <br> *Asistente interactivo con IA (Gemini) en formato widget flotante, con preguntas sugeridas y respuestas con mística villera.* |
+| <img width="1830" height="3952" alt="Sección Institucional El Fortín Digital" src="https://github.com/user-attachments/assets/778444f3-fc97-4c11-9a84-94842a40d415" /> | <img width="1830" height="3952" alt="Chatbot DT Inteligente Abierto" src="https://github.com/user-attachments/assets/b5625256-b73a-4d5e-8793-bd863f996bad" /> |
 
-| Panel de Socio & Historial | Ecosistema del Hincha |
+| Control de Asistencia | Ecosistema del Hincha |
 | :---: | :---: |
-| **Perfil del Hincha** <br> *Métricas de efectividad de puntos, cálculo de fidelidad en tiempo real, carnet digital de socio (mostrando Partidos de Local y Viajes de Visitante), Tabla de Posiciones de la Hinchada (ranking de fidelidad) y tabla de asistencias.* | **Características de la Plataforma** <br><br> 🟢 **Autenticación Segura:** Sesiones con Clerk Auth integradas al flujo relacional.<br><br>⚫ **Base de Datos Serverless:** Persistencia robusta y ágil en Neon PostgreSQL.<br><br>🏆 **Ranking de Fidelidad:** Tabla de posiciones interactiva en tiempo real entre todos los hinchas registrados en la app.<br><br>🏟️ **Viajes de Visitante:** Registro exacto de viajes y partidos presenciales afuera del Fortín, sumando para tu rango de socio.<br><br>🟢 **Diseño UI Premium:** Modo oscuro inmersivo con Tailwind CSS diseñado a medida para el Villero. |
-| <img src="https://github.com/user-attachments/assets/8c5b193f-00fb-4c8c-a4b7-d0bd7fe0b99c" width="100%" /> | *“A Villa Mitre yo lo sigo siempre a todos lados...”* <br><br> Este sistema representa la bitácora oficial de los simpatizantes del Tricolor. Un registro formal, exhaustivo y estético de cada paso que damos alentando al más grande del sur argentino. |
+| **Fixture Federal A** <br> *Filtros avanzados por sede/resultado, buscador semántico y registro condicional según la localía de cada partido.* | **Características de la Plataforma** <br><br> 🟢 **Autenticación Segura:** Sesiones con Clerk Auth integradas al flujo relacional.<br><br>⚫ **Base de Datos Serverless:** Persistencia robusta y ágil en Neon PostgreSQL.<br><br>🏆 **Ranking de Fidelidad:** Tabla de posiciones interactiva en tiempo real entre todos los hinchas registrados.<br><br>🏟️ **Viajes de Visitante:** Registro de viajes y partidos presenciales afuera del Fortín, sumando para tu rango de socio.<br><br>🟢 **Diseño UI Premium:** Modo oscuro inmersivo con Tailwind CSS diseñado a medida para el Villero. |
+| <img src="https://github.com/user-attachments/assets/bb26902f-b8e2-41e6-a4fa-0626d3517ddb" width="100%" /> | <img src="https://github.com/user-attachments/assets/8c5b193f-00fb-4c8c-a4b7-d0bd7fe0b99c" width="100%" /> |
 
 ---
 
 ## 🛠️ Tech Stack (Ecosistema Tecnológico)
 
 * **Framework:** Next.js (App Router) con TypeScript para garantizar tipado estricto y excelente performance en la renderización del servidor.
+* **Inteligencia Artificial:** API de Google Gemini (SDK `@google/generative-ai`) para el motor del chatbot.
 * **Base de Datos:** PostgreSQL administrado y hospedado de forma elástica en la nube mediante Neon Database.
-* **ORM:** Prisma ORM para el modelado relacional de datos, control de de las tablas y consultas declarativas.
+* **ORM:** Prisma ORM para el modelado relacional de datos, control de las tablas y consultas declarativas.
 * **Autenticación:** Clerk Auth para la gestión segura de sesiones de usuarios y vinculación única de perfiles de hinchas con su ID de socio.
 * **Estilos:** Tailwind CSS con una paleta de colores personalizada que respeta fielmente la identidad del Club (verde bosque, blanco y negro antracita).
 * **Despliegue:** Vercel.
@@ -35,17 +36,22 @@ La plataforma se conecta a un motor relacional en la nube para sincronizar diná
 
 ## 🧠 Desafíos Técnicos Resueltos & Arquitectura
 
-### 1. Adaptación Dinámica de UI en Base a Reglas de Negocio (Localía)
+### 1. Integración de IA Contextualizada (Patrón RAG con Gemini)
+En lugar de implementar un chatbot con respuestas preprogramadas o dejar que la IA simule datos libres de internet, implementamos un flujo de **Generación Aumentada por Recuperación (RAG)**:
+* El backend en `app/api/chat/route.ts` intercepta la sesión del usuario a través de Clerk y consulta en tiempo real la base de datos de Neon DB para extraer estadísticas del hincha (su racha de asistencia actual) y la fecha de los partidos del fixture.
+* Esta información se inyecta dinámicamente en el *System Prompt* de Gemini junto a un filtro sanitario institucional de Villa Mitre que impide que el bot invente datos o hable de temas ajenos al club, garantizando respuestas 100% precisas, seguras y contextualizadas.
+
+### 2. Adaptación Dinámica de UI en Base a Reglas de Negocio (Localía)
 Uno de los puntos clave de UX fue asegurar que los botones de acción para el hincha no permitieran registrar estados inconsistentes (como marcar *"Fui a la cancha"* en un partido que se jugaba a cientos de kilómetros de distancia de local).
 * Se programó una capa lógica que evalúa dinámicamente la propiedad `sede` (Local/Visitante) de cada partido obtenido desde Neon DB.
 * En base a este estado, el componente de React muta de forma condicional para renderizar el botón `🏟️ Fui a la cancha` o `✈️ De visitante`, garantizando la consistencia semántica en la bitácora del usuario.
 
-### 2. Sincronización Segura de Usuarios Extensibles con Clerk Metadata
+### 3. Sincronización Segura de Usuarios Extensibles con Clerk Metadata
 Para evitar la duplicación de datos sensibles y mantener la aplicación liviana, no se almacenan contraseñas ni datos personales en la base de datos de PostgreSQL.
 * Toda la autenticación e información del perfil corre sobre la infraestructura segura de Clerk.
 * Para generar la tarjeta de socio digital única (carnet), se consume de forma segura el ID de usuario de Clerk y se procesa del lado del servidor para generar un hash alfanumérico único para el usuario, simulando un número de credencial de socio inmutable.
 
-### 3. Navegación Móvil de Alto Rendimiento (Mobile-First Floating Navigation)
+### 4. Navegación Móvil de Alto Rendimiento (Mobile-First Floating Navigation)
 Para maximizar el espacio de lectura en dispositivos móviles y replicar la experiencia de usuario de una aplicación móvil nativa (PWA):
 * Se implementó un componente de navegación flotante tipo píldora (`bottom-tab`) fijado en la parte inferior de la pantalla (`fixed bottom-6`).
 * Se utilizó un diseño híbrido con propiedades de CSS avanzadas como `backdrop-blur-md` y opacidades dinámicas sobre una paleta verde-oscura, logrando un efecto translúcido que permite leer el contenido del fixture por detrás al hacer scroll.
