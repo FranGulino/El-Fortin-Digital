@@ -1,9 +1,14 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-
-const isProtectedRoute = createRouteMatcher(["/partidos(.*)", "/hincha(.*)"]);
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
+  const { pathname } = req.nextUrl;
+  
+  // Proteger las secciones privadas del hincha
+  if (
+    pathname.startsWith("/partidos") || 
+    pathname.startsWith("/hincha") || 
+    pathname.startsWith("/asistente")
+  ) {
     await auth.protect();
   }
 });

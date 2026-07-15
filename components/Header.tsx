@@ -1,12 +1,18 @@
 "use client";
 
-import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, Show, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ChatWidget from "./ChatWidget";
 
 export default function Header() {
   const pathname = usePathname();
+  const { user } = useUser();
+
+  // Ocultar el header global por completo en el chat del asistente
+  if (pathname === "/asistente") return null;
+
   const isHomeActive = pathname === "/";
   const isPartidosActive = pathname.startsWith("/partidos");
   const isHinchaActive = pathname.startsWith("/hincha");
@@ -35,7 +41,7 @@ export default function Header() {
           </div>
         </Link>
 
-        {/* Enlaces de Navegación del Centro (Estilo Captura con estado activo dinámico) */}
+        {/* Enlaces de Navegación del Centro (Estilo original y unificado) */}
         <nav className="hidden md:flex items-center gap-8 text-xs font-semibold tracking-wider uppercase">
           <Link
             href="/"
@@ -69,12 +75,12 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Acciones del Lado Derecho (Clerk integrado con estética de captura) */}
+        {/* Acciones del Lado Derecho (Clerk integrado de forma personalizada) */}
         <div className="flex items-center gap-6">
           <Show when="signed-in">
             <div className="flex items-center gap-3">
-              <span className="hidden sm:inline text-xs font-bold text-zinc-400 tracking-wider uppercase">
-                Panel
+              <span className="hidden sm:inline text-xs font-bold text-zinc-400 tracking-wider">
+                {user?.firstName ? `Hola, ${user.firstName}` : "Mi Cuenta"}
               </span>
               <UserButton
                 appearance={{
@@ -103,7 +109,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Botonera de Navegación Móvil Flotante (Pill-shaped app bar) */}
+      {/* Botonera de Navegación Móvil Flotante (Pill-shaped app bar simplificada) */}
       <nav className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-around w-[90%] max-w-[360px] h-14 rounded-full border border-[#2d6a4f]/25 bg-[#1d211e]/90 backdrop-blur-md px-6 shadow-2xl shadow-black/80">
         <Link
           href="/"
@@ -133,6 +139,9 @@ export default function Header() {
           <span>{"Perfil"}</span>
         </Link>
       </nav>
+
+      {/* Widget de Chat del DT Inteligente */}
+      <ChatWidget />
     </header>
   );
 }
