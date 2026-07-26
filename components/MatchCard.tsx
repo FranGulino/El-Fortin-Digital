@@ -23,6 +23,7 @@ interface MatchCardProps {
 
 export default function MatchCard({ match, currentUserId }: MatchCardProps) {
   const isPlayed = match.goalsVM !== null && match.goalsOpponent !== null;
+  const canRegister = isPlayed || (new Date() >= new Date(match.date));
 
   // Deducimos el resultado del partido desde la perspectiva de Villa Mitre
   let resultType: "VICTORIA" | "EMPATE" | "DERROTA" | "FUTURO" = "FUTURO";
@@ -230,8 +231,8 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
           </span>
         </div>
 
-        {/* Botones Interactivos de Asistencia */}
-        {isPlayed ? (
+        {/* Botones Interactivos de Asistencia (Habilitados desde el inicio del partido) */}
+        {canRegister ? (
           <AttendanceButtons matchId={match.id} activeType={activeAttendanceType} isHome={match.homeTeam === "Villa Mitre"} />
         ) : (
           <div className="flex items-center justify-center h-10 w-full rounded-[8px] bg-zinc-950/30 border border-zinc-900 text-[9px] font-bold text-zinc-650 uppercase tracking-widest">
