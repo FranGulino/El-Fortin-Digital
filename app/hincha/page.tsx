@@ -198,6 +198,11 @@ export default async function HinchaPage() {
     ? `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || user.username || "Hincha Tricolor"
     : "Hincha Tricolor";
 
+  const serializedMatchesForHistory = matches.map((m) => ({
+    ...m,
+    date: m.date.toISOString(),
+  }));
+
   return (
     <div className="flex flex-col min-h-screen bg-[#111412] text-[#e1e3de] relative overflow-hidden">
       
@@ -517,7 +522,7 @@ export default async function HinchaPage() {
         )}
 
         {/* 5. Tabla del Historial de Asistencia General con pestañas de Local y Visitante/TV */}
-        <HinchaHistorial matches={matches as any} userId={userId} />
+        <HinchaHistorial matches={serializedMatchesForHistory as any} userId={userId} />
 
       </main>
 

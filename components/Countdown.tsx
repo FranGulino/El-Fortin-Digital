@@ -17,6 +17,15 @@ export default function Countdown({ targetDate }: CountdownProps) {
 
   useEffect(() => {
     const target = new Date(targetDate).getTime();
+    
+    // Verificar inicialmente si ya expiró para no crear intervalos innecesarios
+    const initialDiff = target - new Date().getTime();
+    if (initialDiff <= 0) {
+      setIsExpired(true);
+      return;
+    }
+
+    let intervalId: any;
 
     const updateTimer = () => {
       const now = new Date().getTime();
@@ -24,7 +33,7 @@ export default function Countdown({ targetDate }: CountdownProps) {
 
       if (difference <= 0) {
         setIsExpired(true);
-        clearInterval(intervalId);
+        if (intervalId) clearInterval(intervalId);
       } else {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
@@ -38,9 +47,15 @@ export default function Countdown({ targetDate }: CountdownProps) {
     };
 
     updateTimer();
-    const intervalId = setInterval(updateTimer, 1000);
+    
+    const difference = target - new Date().getTime();
+    if (difference > 0) {
+      intervalId = setInterval(updateTimer, 1000);
+    }
 
-    return () => clearInterval(intervalId);
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [targetDate]);
 
   if (isExpired) {

@@ -112,7 +112,7 @@ export default async function HomePage() {
                     </div>
 
                     <div className="flex flex-col items-center">
-                      <Countdown targetDate={nextMatch.date} />
+                      <Countdown targetDate={nextMatch.date.toISOString()} />
                     </div>
                   </div>
                 )}

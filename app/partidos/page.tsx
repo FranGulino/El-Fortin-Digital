@@ -19,12 +19,17 @@ export default async function PartidosPage() {
     },
   });
 
+  const serializedMatches = matches.map((m) => ({
+    ...m,
+    date: m.date.toISOString(),
+  }));
+
   return (
     <div className="flex flex-col min-h-screen bg-[#111412] text-[#e1e3de]">
       <Header />
 
       <main className="flex-1">
-        <PartidosClient matches={matches} userId={userId} />
+        <PartidosClient matches={serializedMatches as any} userId={userId} />
       </main>
     </div>
   );
