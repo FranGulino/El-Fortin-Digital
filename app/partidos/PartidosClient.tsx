@@ -112,16 +112,30 @@ export default function PartidosClient({ matches, userId }: PartidosClientProps)
     itemsToRender.sort((a, b) => a.fixtureRound - b.fixtureRound);
   }
 
-  // 3. Paginación (solo para fases distintas de Fase 1 para no cortar las vueltas)
+  if (activePhase === MatchPhase.NONAGONAL) {
+    const freeDay = {
+      id: "free-nonagonal-7",
+      isFreeDay: true,
+      fixtureRound: 7,
+    };
+    if (!searchTerm && filterResult === "TODOS" && filterVenue === "TODOS") {
+      itemsToRender.push(freeDay);
+    }
+    // Ordenamos cronológicamente por número de fecha
+    itemsToRender.sort((a, b) => a.fixtureRound - b.fixtureRound);
+  }
+
+  // 3. Paginación (se desactiva para Fase 1 y Nonagonal para ver todo el fixture de corrido)
   const isFase1 = activePhase === MatchPhase.FASE_1;
+  const bypassPagination = isFase1 || activePhase === MatchPhase.NONAGONAL;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   
-  const paginatedItems = isFase1 
+  const paginatedItems = bypassPagination 
     ? itemsToRender 
     : itemsToRender.slice(indexOfFirstItem, indexOfLastItem);
     
-  const totalPages = isFase1 ? 1 : Math.ceil(itemsToRender.length / itemsPerPage);
+  const totalPages = bypassPagination ? 1 : Math.ceil(itemsToRender.length / itemsPerPage);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -319,17 +333,6 @@ export default function PartidosClient({ matches, userId }: PartidosClientProps)
 
             return <MatchCard key={item.id} match={item} currentUserId={userId} />;
           })}
-
-          {/* Tarjeta interactiva dashed de registro retroactivo al final */}
-          {!isFase1 && currentPage === totalPages && (
-            <div className="flex flex-col items-center justify-center p-6 rounded-[8px] border border-dashed border-[#414942]/65 bg-zinc-950/10 hover:border-zinc-700/40 transition-all text-center min-h-[260px]">
-              <span className="text-2xl text-[#2d6a4f] mb-3">{"➕"}</span>
-              <h4 className="text-xs font-bold text-white">{"Registrar Partido Retroactivo"}</h4>
-              <p className="text-[10px] text-zinc-500 max-w-xs mt-1.5 leading-relaxed">
-                {"¿Asististe a un partido clásico que no está cargado en el fixture? Registrá la fecha y guardalo en tu historial."}
-              </p>
-            </div>
-          )}
         </div>
       )}
 
