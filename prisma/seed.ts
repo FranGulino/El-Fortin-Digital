@@ -183,7 +183,7 @@ async function main() {
       scorers: [],
     },
     {
-      date: new Date("2026-08-09T18:30:00Z"),
+      date: new Date("2026-08-08T18:30:00Z"), // Sábado 8 de agosto
       fixtureRound: 2,
       phase: MatchPhase.NONAGONAL,
       homeTeam: "Villa Mitre",
@@ -193,7 +193,7 @@ async function main() {
       scorers: [],
     },
     {
-      date: new Date("2026-08-16T18:30:00Z"),
+      date: new Date("2026-08-12T18:30:00Z"), // Miércoles 12 de agosto (Entre semana)
       fixtureRound: 3,
       phase: MatchPhase.NONAGONAL,
       homeTeam: "Olimpo",
@@ -203,7 +203,7 @@ async function main() {
       scorers: [],
     },
     {
-      date: new Date("2026-08-23T18:30:00Z"),
+      date: new Date("2026-08-16T18:30:00Z"), // Domingo 16 de agosto
       fixtureRound: 4,
       phase: MatchPhase.NONAGONAL,
       homeTeam: "Villa Mitre",
@@ -213,7 +213,7 @@ async function main() {
       scorers: [],
     },
     {
-      date: new Date("2026-08-30T18:30:00Z"),
+      date: new Date("2026-08-23T18:30:00Z"), // Domingo 23 de agosto
       fixtureRound: 5,
       phase: MatchPhase.NONAGONAL,
       homeTeam: "Juventud Antoniana",
@@ -223,7 +223,7 @@ async function main() {
       scorers: [],
     },
     {
-      date: new Date("2026-09-06T18:30:00Z"),
+      date: new Date("2026-08-30T18:30:00Z"), // Domingo 30 de agosto
       fixtureRound: 6,
       phase: MatchPhase.NONAGONAL,
       homeTeam: "Villa Mitre",
@@ -232,9 +232,9 @@ async function main() {
       goalsOpponent: null,
       scorers: [],
     },
-    // Fecha 7 es Libre
+    // Fecha 7 es Libre (Inyectada dinámicamente el 6 de septiembre)
     {
-      date: new Date("2026-09-20T18:30:00Z"),
+      date: new Date("2026-09-13T18:30:00Z"), // Domingo 13 de septiembre
       fixtureRound: 8,
       phase: MatchPhase.NONAGONAL,
       homeTeam: "Argentino (Monte Maíz)",
@@ -244,7 +244,7 @@ async function main() {
       scorers: [],
     },
     {
-      date: new Date("2026-09-27T18:30:00Z"),
+      date: new Date("2026-09-20T18:30:00Z"), // Domingo 20 de septiembre
       fixtureRound: 9,
       phase: MatchPhase.NONAGONAL,
       homeTeam: "Villa Mitre",
