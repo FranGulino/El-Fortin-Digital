@@ -26,8 +26,16 @@ interface PartidosClientProps {
 }
 
 export default function PartidosClient({ matches, userId }: PartidosClientProps) {
-  // Pestaña de Fase activa (Fase 1 por defecto)
-  const [activePhase, setActivePhase] = useState<MatchPhase>(MatchPhase.FASE_1);
+  // Determinar la fase actual del club dinámicamente (próximo partido pendiente o último disputado)
+  const nextPendingMatch = matches.find((m) => m.goalsVM === null && m.goalsOpponent === null);
+  const defaultPhase = nextPendingMatch
+    ? (nextPendingMatch.phase as MatchPhase)
+    : matches.length > 0
+      ? (matches[matches.length - 1].phase as MatchPhase)
+      : MatchPhase.FASE_1;
+
+  // Pestaña de Fase activa
+  const [activePhase, setActivePhase] = useState<MatchPhase>(defaultPhase);
   
   // Sub-filtro de Vuelta (solo aplicable para Fase 1)
   const [activeVuelta, setActiveVuelta] = useState<1 | 2>(1);
