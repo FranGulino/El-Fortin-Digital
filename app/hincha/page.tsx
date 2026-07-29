@@ -6,6 +6,10 @@ import HinchaHistorial from "@/components/HinchaHistorial";
 
 export const revalidate = 0; // Respuesta instantánea al registrar asistencia
 
+export const metadata = {
+  title: "Mi Perfil",
+};
+
 export default async function HinchaPage() {
   const { userId } = await auth();
   const user = await currentUser();

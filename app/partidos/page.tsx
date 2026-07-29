@@ -5,6 +5,10 @@ import Header from "@/components/Header";
 
 export const revalidate = 0; // Respuesta instantánea al registrar asistencia
 
+export const metadata = {
+  title: "Fixture",
+};
+
 export default async function PartidosPage() {
   const { userId } = await auth();
 
