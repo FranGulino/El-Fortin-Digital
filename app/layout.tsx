@@ -15,9 +15,6 @@ export const metadata: Metadata = {
     template: "%s | El Fortín Digital",
   },
   description: "Bitácora personal para registrar la asistencia a los partidos de Villa Mitre y analizar las estadísticas de efectividad del hincha.",
-  icons: {
-    icon: "/icon.svg",
-  },
 };
 
 export default function RootLayout({
