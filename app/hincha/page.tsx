@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import Header from "@/components/Header";
 import Image from "next/image";
 import HinchaHistorial from "@/components/HinchaHistorial";
+import { getMatchRoundLabel } from "@/lib/matchUtils";
 
 export const revalidate = 0; // Respuesta instantánea al registrar asistencia
 
@@ -407,7 +408,7 @@ export default async function HinchaPage() {
                   </span>
                 </p>
                 <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
-                  <span>{`Fecha ${bestResult.fixtureRound}`}</span>
+                  <span>{getMatchRoundLabel(bestResult.phase, bestResult.fixtureRound)}</span>
                   <span>{"•"}</span>
                   <span className={bestResult.homeTeam === "Villa Mitre" ? "text-green-500" : "text-amber-500"}>
                     {bestResult.homeTeam === "Villa Mitre" ? "🏟️ Local" : "✈️ Visitante"}
@@ -447,7 +448,7 @@ export default async function HinchaPage() {
                   </span>
                 </p>
                 <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
-                  <span>{`Fecha ${worstResult.fixtureRound}`}</span>
+                  <span>{getMatchRoundLabel(worstResult.phase, worstResult.fixtureRound)}</span>
                   <span>{"•"}</span>
                   <span className={worstResult.homeTeam === "Villa Mitre" ? "text-zinc-500" : "text-amber-500"}>
                     {worstResult.homeTeam === "Villa Mitre" ? "🏟️ Local" : "✈️ Visitante"}

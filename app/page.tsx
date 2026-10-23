@@ -5,6 +5,7 @@ import { SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import Countdown from "@/components/Countdown";
+import { getMatchRoundLabel } from "@/lib/matchUtils";
 
 export default async function HomePage() {
   const { userId } = await auth();
@@ -107,7 +108,7 @@ export default async function HomePage() {
                         {nextMatch.homeTeam === "Villa Mitre" ? "VILLA MITRE" : nextMatch.homeTeam} {"vs."} {nextMatch.awayTeam === "Villa Mitre" ? "VILLA MITRE" : nextMatch.awayTeam}
                       </h3>
                       <p className="text-[9px] text-zinc-500 font-bold tracking-wider uppercase">
-                        {"Fecha"} {nextMatch.fixtureRound} {"— Torneo Federal A"}
+                        {getMatchRoundLabel(nextMatch.phase, nextMatch.fixtureRound)} {"— Torneo Federal A"}
                       </p>
                     </div>
 

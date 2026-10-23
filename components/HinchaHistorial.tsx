@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getMatchRoundLabel } from "@/lib/matchUtils";
 
 interface MatchType {
   id: string;
@@ -116,7 +117,7 @@ export default function HinchaHistorial({ matches, userId }: HinchaHistorialProp
                     {match.homeTeam === "Villa Mitre" ? "VILLA MITRE" : match.homeTeam} {"vs."} {match.awayTeam === "Villa Mitre" ? "VILLA MITRE" : match.awayTeam}
                   </p>
                   <div className="flex items-center gap-2 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
-                    <span>{"Fecha"} {match.fixtureRound}</span>
+                    <span>{getMatchRoundLabel(match.phase, match.fixtureRound, { short: true })}</span>
                     <span>{"•"}</span>
                     <span>{formatDate(match.date)}</span>
                     <span>{"•"}</span>

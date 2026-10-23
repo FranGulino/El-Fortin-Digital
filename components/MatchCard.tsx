@@ -1,6 +1,7 @@
 import { AttendanceType } from "@prisma/client";
 import Image from "next/image";
 import AttendanceButtons from "./AttendanceButtons";
+import { getMatchRoundLabel, getPhaseLabel } from "@/lib/matchUtils";
 
 interface MatchCardProps {
   match: {
@@ -151,7 +152,7 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
         {/* Cabecera de la Tarjeta (Fecha e Indicador de resultado) */}
         <div className="flex items-center justify-between mb-4">
           <span className="text-xs font-bold text-white tracking-wide uppercase">
-            {"Fecha"} {match.fixtureRound}
+            {getMatchRoundLabel(match.phase, match.fixtureRound)}
           </span>
           <span className={`text-[10px] font-black tracking-wider px-3 py-0.5 rounded-full ${badgeClasses()}`}>
             {resultLabel()}
@@ -227,7 +228,7 @@ export default function MatchCard({ match, currentUserId }: MatchCardProps) {
             {match.homeTeam === "Villa Mitre" ? "🏟️ El Fortín" : "✈️ Visitante"}
           </span>
           <span>
-            {match.phase.replace("_", " ")}
+            {getPhaseLabel(match.phase)}
           </span>
         </div>
 

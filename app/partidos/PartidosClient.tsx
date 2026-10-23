@@ -133,9 +133,9 @@ export default function PartidosClient({ matches, userId }: PartidosClientProps)
     itemsToRender.sort((a, b) => a.fixtureRound - b.fixtureRound);
   }
 
-  // 3. Paginación (se desactiva para Fase 1 y Nonagonal para ver todo el fixture de corrido)
+  // 3. Paginación (se desactiva para ver todo el fixture y cruces de corrido)
   const isFase1 = activePhase === MatchPhase.FASE_1;
-  const bypassPagination = isFase1 || activePhase === MatchPhase.NONAGONAL;
+  const bypassPagination = isFase1 || activePhase === MatchPhase.NONAGONAL || activePhase === MatchPhase.ETAPA_ELIMINATORIA;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   
@@ -162,7 +162,7 @@ export default function PartidosClient({ matches, userId }: PartidosClientProps)
   const phaseTabs = [
     { value: MatchPhase.FASE_1, label: "Fase 1 (Zona A)" },
     { value: MatchPhase.NONAGONAL, label: "Nonagonal 2026" },
-    { value: MatchPhase.ETAPA_ELIMINATORIA, label: "Etapa Eliminatoria" },
+    { value: MatchPhase.ETAPA_ELIMINATORIA, label: "Reválida (Playoffs)" },
   ];
 
   return (
@@ -302,14 +302,14 @@ export default function PartidosClient({ matches, userId }: PartidosClientProps)
             {activePhase === MatchPhase.NONAGONAL 
               ? "El Nonagonal todavía no ha comenzado" 
               : activePhase === MatchPhase.ETAPA_ELIMINATORIA 
-              ? "Etapa Eliminatoria no disputada"
+              ? "Cruces de Reválida no disputados"
               : "No se encontraron registros"}
           </p>
           <p className="text-xs text-zinc-500 mt-1 max-w-sm">
             {activePhase === MatchPhase.NONAGONAL 
               ? "Villa Mitre clasificó de forma directa. En cuanto se sortee el fixture, se inyectarán las fechas de esta fase." 
               : activePhase === MatchPhase.ETAPA_ELIMINATORIA
-              ? "Etapa posterior a la Fase 1 y Nonagonal."
+              ? "Cruces de eliminación directa de la Reválida (16avos, octavos, cuartos, semifinal y final)."
               : "Probá modificando la búsqueda o los filtros."}
           </p>
         </div>
